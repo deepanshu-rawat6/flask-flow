@@ -36,16 +36,16 @@ jobs:
         with:
           image: deepanshurawat6/flask-frontend
           registry: docker.io
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
           tags: 1.1.1-${{github.run_number}}
-      - name: Checkout frontend-configs
+      - name: Checkout flask-frontend-configs
         uses: actions/checkout@v3
         with:
-          repository: Devs-At-Work/frontend-configs
+          repository: deepanshu-rawat6/flask-frontend-configs
           token: ${{ secrets.TARGET_REPO_TOKEN }}
           #  ref: main
-          path: ./frontend-configs
+          path: ./flask-frontend-configs
 
       - name: Update deployment YAML
         run: |
