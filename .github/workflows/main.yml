@@ -1,0 +1,67 @@
+name: Python application
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: Buid and push docker images
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: deepanshurawat6/flask-frontend
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tags: 1.1.1-${{github.run_number}}
+      - name: Checkout frontend-configs
+        uses: actions/checkout@v3
+        with:
+          repository: Devs-At-Work/frontend-configs
+          token: ${{ secrets.TARGET_REPO_TOKEN }}
+          #  ref: main
+          path: ./frontend-configs
+
+      - name: Update deployment YAML
+        run: |
+          sudo wget https://github.com/mikefarah/yq/releases/download/v4.12.1/yq_linux_amd64 -O /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+
+          yq e -i '.spec.template.spec.containers[0].image = "deepanshurawat6/flask-frontend:1.1.1-${{ github.run_number }}"' ./flask-frontend-configs/dev/frontend-deployment.yaml
+
+      - name: Commit and Push changes to config files
+        run: |
+          cd ./frontend-configs
+          git add .
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions@github.com"
+          git commit -am "updated: build number for frontend image"
+          git push
+
+# This pipeline push the docker image to docker hub and then update the deployment yaml file in the frontend-configs repo, to trigger Argo CD workflow.
+
