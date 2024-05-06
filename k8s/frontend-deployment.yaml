@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: 854171615125.dkr.ecr.us-east-1.amazonaws.com/deepanshurawat6-web-frontend:0.1.0
+          image: deepanshurawat6/flask-frontend
           resources:
             requests:
               cpu: 500m
