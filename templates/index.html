@@ -1,0 +1,48 @@
+{% extends "layout.html"%}
+{% block title %}
+Detect-me
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <header class="text-white text-center">
+        <div class= "content">
+            <h1>Detect.me</h1>
+            <h1>Detect.me</h1>
+        </div>
+    </header>
+    <div class="row py-4">
+        <div class="col-lg-5 mx-auto text-center">
+            <div class="button"><a href="/recent">View your recent detection</a></div>
+            <!-- Upload image input-->
+            <form action="/" enctype="multipart/form-data" method="POST">
+                    <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+                        <input class="form-control border-0" id="upload" name="file" type="file">
+                        <label class="font-weight-light text-muted" for="upload" id="upload-label">Browse file</label>
+                        <div class="input-group-append">
+                            <label class="btn btn-light m-0 rounded-pill px-4" for="upload"> <i
+                                    class="fa fa-cloud-upload mr-2 text-muted"></i><small
+                                    class="text-uppercase font-weight-bold text-muted">Browse file</small></label>
+                        </div>
+                    </div>
+                  
+                <!-- Uploaded image area-->
+                <br>
+                <p class="font-italic text-white text-center">The image uploaded will be rendered inside the box
+                    below.</p>
+                <div class="image-area mt-4"><img alt="" class="img-fluid rounded shadow-sm mx-auto d-block"
+                                                  id="imageResult" name="imageResult"
+                                                  src="#"></div>
+                <!-- Submit button-->
+                        <div class="button">
+                            <input class="btn" value="Detect objects" type="submit"/>
+                        </div>
+                    
+            </form>
+        </div>
+    </div>
+    
+</div>
+
+
+{% endblock %}
