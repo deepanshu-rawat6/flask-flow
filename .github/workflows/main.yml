@@ -43,7 +43,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: deepanshu-rawat6/flask-frontend-configs
-          token: ${{ secrets.TARGET_REPO_TOKEN }}
+          token: ${{ secrets.REPO_TOKEN }}
           #  ref: main
           path: ./flask-frontend-configs
 
