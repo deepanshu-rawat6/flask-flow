@@ -56,7 +56,7 @@ jobs:
 
       - name: Commit and Push changes to config files
         run: |
-          cd ./frontend-configs
+          cd ./flask-frontend-configs
           git add .
           git config user.name "github-actions[bot]"
           git config user.email "github-actions@github.com"
