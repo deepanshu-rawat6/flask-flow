@@ -53,6 +53,7 @@ jobs:
           sudo chmod +x /usr/local/bin/yq
 
           yq e -i '.spec.template.spec.containers[0].image = "deepanshurawat6/flask-frontend:1.1.1-${{ github.run_number }}"' ./flask-frontend-configs/dev/frontend-deployment.yaml
+          yq e -i '.spec.template.spec.containers[0].image = "deepanshurawat6/flask-frontend:1.1.1-${{ github.run_number }}"' ./flask-frontend-configs/dev/frontend-rollout.yaml
 
       - name: Commit and Push changes to config files
         run: |
